@@ -108,6 +108,16 @@
       .center{
         padding:8px;
         gap:16px;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+      .page.active{
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        overflow: visible !important;
       }
       .hero{
         flex-direction:column;
@@ -135,19 +145,30 @@
         gap:12px;
         margin-top:12px;
         margin-bottom:12px;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        overflow: visible !important;
       }
       .card{
         padding:10px;
         border: 1px solid rgba(255,255,255,0.03) !important;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        overflow: visible !important;
       }
       .card.roster-card {
-        height: auto;
-        overflow-y: visible;
-        min-height: auto;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        overflow-y: visible !important;
       }
       .roster-list {
-        height: auto;
-        overflow-y: visible;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+        overflow-y: visible !important;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -975,7 +996,7 @@
           vx: (Math.random()-0.5) * 0.45,
           vy: (Math.random()-0.5) * 0.45,
           r: 1.0 + Math.random()*2.2,
-          c: colors[i%2],
+          c: colors[i%2]
         });
       }
       function resize(){
@@ -986,7 +1007,7 @@
         ctx.setTransform(1,0,0,1,0,0);
         ctx.scale(DPR, DPR);
       }
-      addEventListener('resize', () => {resize();});
+      addEventListener('resize', () => {resize()});
       function dist(a,b){
         const dx=a.x-b.x, dy=a.y-b.y;
         return Math.sqrt(dx*dx+dy*dy);
@@ -1059,7 +1080,7 @@
         {name: 'alberkaaa', info: 'Albert Chernoivanov, 21, Offlane.', image: '3.png'},
         {name: 'Quezy', info: 'Aleksandr Lipin, 22, Soft support.', image: '4.png'},
         {name: 'Till The End', info: 'Ilya Deriglazov, 25, Hard support.', image: '5.png'},
-        {name: 'stray228', info: 'Oleg Bocharov, 28, Manager и главный инвестор.', image: '6.png'},
+        {name: 'stray228', info: 'Oleg Bocharov, 28, Manager и главный инвестор.', image: '6.png'}
       ];
       playerButtons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1093,21 +1114,21 @@
           closeModal();
         }
       });
-      document.querySelectorAll('.video-card').forEach(card=>{
-        card.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' ') {
+      document.querySelectorAll('.video-card').forEach(card => {
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
             card.click();
             e.preventDefault();
           }
         });
-        card.addEventListener('click', ()=>{
+        card.addEventListener('click', () => {
           card.animate([
-            {transform:'scale(1)'}, 
-            {transform:'scale(0.98)'}, 
-            {transform:'scale(1)'}
+            {transform: 'scale(1)'},
+            {transform: 'scale(0.98)'},
+            {transform: 'scale(1)'}
           ], {
-            duration:220, 
-            easing:'ease-out'
+            duration: 220,
+            easing: 'ease-out'
           });
         });
       });
