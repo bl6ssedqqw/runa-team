@@ -141,12 +141,12 @@
       }
       .card.roster-card {
         min-height: auto;
-        max-height: 200px;
-        overflow-y: auto;
+        height: auto;
+        overflow-y: visible;
       }
       .roster-list {
-        max-height: 180px;
-        overflow-y: auto;
+        height: auto;
+        overflow-y: visible;
       }
       .card h3{
         font-size:13px;
@@ -476,7 +476,8 @@
       border-radius: 50%;
       flex-shrink: 0;
       vertical-align: middle;
-      margin-top: 0;
+      object-fit: cover;
+      margin: 0;
     }
     .roster-item img.flag {
       width: 24px;
@@ -492,18 +493,20 @@
       text-overflow: ellipsis;
       line-height: 40px;
       vertical-align: middle;
-      margin-top: 0;
+      margin: 0;
     }
     @media (min-width: 641px) {
       .roster-item {
         align-items: center;
       }
       .roster-item img.player-photo {
-        margin-top: 0;
+        margin: 0;
+        vertical-align: middle;
       }
       .roster-item span {
         line-height: 40px;
-        margin-top: 0;
+        margin: 0;
+        vertical-align: middle;
       }
     }
     .right{
