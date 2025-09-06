@@ -58,6 +58,168 @@
       .left{order:2}
       header{order:1;margin-bottom:10px}
     }
+    @media (max-width:640px){
+      .app{
+        padding:12px;
+        gap:16px;
+      }
+      header{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:10px;
+      }
+      .brand{
+        flex-direction:row;
+        margin-bottom:10px;
+      }
+      .logo{
+        width:40px;
+        height:40px;
+      }
+      .brand h1{
+        font-size:14px;
+      }
+      .brand p{
+        font-size:11px;
+      }
+      nav.top{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+      }
+      nav.top a{
+        font-size:12px;
+        padding:6px 10px;
+      }
+      .left{
+        flex-direction:row;
+        flex-wrap:wrap;
+        justify-content:flex-start;
+        height:auto;
+        padding:12px;
+        gap:10px;
+      }
+      .icon-btn{
+        width:48px;
+        height:48px;
+        border-radius:10px;
+        flex-shrink:0;
+      }
+      .center{
+        padding:8px;
+        gap:16px;
+      }
+      .hero{
+        flex-direction:column;
+        padding:12px;
+        gap:12px;
+        min-height:auto;
+      }
+      .hero .left-hero{
+        max-width:100%;
+        text-align:center;
+      }
+      .hero h2{
+        font-size:16px;
+      }
+      .hero p{
+        font-size:12px;
+      }
+      .hero .hero-art{
+        width:100%;
+        height:80px;
+        font-size:12px;
+      }
+      .cards-row{
+        grid-template-columns: 1fr;
+        gap:12px;
+        margin-top:12px;
+        margin-bottom:12px;
+      }
+      .card{
+        padding:10px;
+        min-height:100px;
+      }
+      .card h3{
+        font-size:13px;
+      }
+      .card p{
+        font-size:11px;
+      }
+      .roster-item{
+        padding:6px;
+        gap:8px;
+      }
+      .roster-item img.player-photo{
+        width:36px;
+        height:36px;
+      }
+      .roster-item img.flag{
+        width:20px;
+        height:14px;
+      }
+      .roster-item span{
+        font-size:12px;
+        line-height:36px;
+      }
+      .right{
+        padding:12px;
+        gap:10px;
+        height:auto;
+      }
+      .video-card{
+        flex-direction:column;
+        padding:8px;
+        gap:8px;
+      }
+      .thumb{
+        width:100%;
+        height:160px;
+      }
+      .vmeta h4{
+        font-size:11px;
+      }
+      .vmeta p{
+        font-size:11px;
+      }
+      .footer-text{
+        font-size:10px;
+        bottom:8px;
+        right:8px;
+      }
+      #player-modal .modal-content{
+        width:90%;
+        max-width:360px;
+        padding:20px;
+      }
+      .player-photo{
+        width:120px;
+        height:120px;
+      }
+      #player-name{
+        font-size:20px;
+      }
+      #player-info{
+        font-size:14px;
+      }
+      .social-links{
+        gap:8px;
+      }
+      .social-link{
+        padding:8px 12px;
+        font-size:12px;
+      }
+      .social-link img{
+        width:18px;
+        height:18px;
+      }
+      .neon-orb{
+        width:300px;
+        height:300px;
+        filter:blur(40px);
+        transform:translate3d(-40px,-30px,0);
+      }
+    }
     header{
       grid-column: 1 / -1;
       display:flex;
@@ -865,11 +1027,10 @@
       }
       requestAnimationFrame(step);
     })();
-    
+
     (function(){
       const navLinks = document.querySelectorAll('nav.top a');
       const pages = document.querySelectorAll('.page');
-      
       navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
@@ -889,7 +1050,6 @@
           }
         });
       });
-      
       const playerButtons = document.querySelectorAll('.left .icon-btn[data-player]');
       const modal = document.getElementById('player-modal');
       const closeModalButton = document.getElementById('close-modal');
@@ -902,7 +1062,6 @@
         {name: 'Till The End', info: 'Ilya Deriglazov, 25, Hard support.', image: 'https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png'},
         {name: 'stray228', info: 'Oleg Bocharov, 28, Manager и главный инвестор.', image: '6.png'},
       ];
-      
       playerButtons.forEach(btn => {
         btn.addEventListener('click', () => {
           btn.classList.add('ripple');
@@ -911,18 +1070,15 @@
           btn.classList.add('active');
           const index = parseInt(btn.dataset.player);
           const player = players[index];
-          
           document.getElementById('player-name').textContent = player.name;
           document.getElementById('player-info').textContent = player.info;
           playerImage.src = player.image;
-          
           modal.style.display = 'grid';
           setTimeout(() => {
             modal.classList.add('show');
           }, 10);
         });
       });
-      
       function closeModal() {
         modal.classList.remove('show');
         setTimeout(() => {
@@ -932,15 +1088,12 @@
           modal.style.display = 'none';
         }, 600);
       }
-      
       closeModalButton.addEventListener('click', closeModal);
-      
       modal.addEventListener('click', (e) => {
         if (e.target === modal) {
           closeModal();
         }
       });
-      
       document.querySelectorAll('.video-card').forEach(card=>{
         card.addEventListener('keydown', (e)=>{
           if(e.key === 'Enter' || e.key === ' ') {
@@ -960,6 +1113,18 @@
         });
       });
     })();
+
+    // Mobile scroll enablement
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 640) {
+        document.body.style.overflow = 'auto';
+      } else {
+        document.body.style.overflow = 'hidden';
+      }
+    });
+    if (window.innerWidth <= 640) {
+      document.body.style.overflow = 'auto';
+    }
   </script>
 </body>
 </html>
