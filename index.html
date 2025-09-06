@@ -138,7 +138,15 @@
       }
       .card{
         padding:10px;
-        min-height:100px;
+      }
+      .card.roster-card {
+        min-height: auto;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .roster-list {
+        max-height: 180px;
+        overflow-y: auto;
       }
       .card h3{
         font-size:13px;
@@ -743,10 +751,10 @@
   <div class="app" role="main" aria-label="Главный интерфейс">
     <aside class="left" aria-label="Навигация">
       <button class="icon-btn active" title="nesfeer - Carry" data-player="0"><img src="1.png" alt="nesfeer" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="Nicky'Cool - Midlane" data-player="1"><img src="2.png" alt="Nicky'Cool" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="alberkaaa - Offlane" data-player="2"><img src="3.png" alt="alberkaaa" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="Quezy - Soft support" data-player="3"><img src="4.png" alt="Quezy" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="Till The End - Hard support" data-player="4"><img src="5.png" alt="Till The End" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Nicky'Cool - Midlane" data-player="1"><img src="https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png" alt="Nicky'Cool" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="alberkaaa - Offlane" data-player="2"><img src="https://images.cybersport.ru/images/details-photo/plain/9d/9d0890f8-699b-44dc-936b-0cfd61a9c5b2.png" alt="alberkaaa" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Quezy - Soft support" data-player="3"><img src="https://images.cybersport.ru/images/details-photo/plain/6d/6d995d02-de06-43b8-89d2-ec27c8570614.png" alt="Quezy" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Till The End - Hard support" data-player="4"><img src="https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png" alt="Till The End" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
       <div style="flex:1"></div>
       <button class="icon-btn" title="stray228 - Manager" data-player="5"><img src="6.png" alt="stray228" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
     </aside>
@@ -784,7 +792,7 @@
             <h3>Последние новости</h3>
             <p>Runa Team была подписана Stray228 в июне 2025 года. Команда показала сильную игру на Riyadh Masters 2025, достигнув топ-8. Недавний состав стабилен без изменений с июля. Ближайший ESL One Asia в декабре 2025.</p>
           </article>
-          <article class="card">
+          <article class="card roster-card">
             <h3>Состав</h3>
             <div class="roster-list">
               <div class="roster-item">
