@@ -126,32 +126,113 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.6);
       position:sticky; top:24px;
     }
+    
+    /* Enhanced button animations */
     .icon-btn{
       width:56px;height:56px;border-radius:12px;
       background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
       border:1px solid rgba(255,255,255,0.03);
       cursor:pointer;
-      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+      transition: all .4s var(--ease);
       color:var(--muted);
       font-weight:700;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s var(--ease) forwards;
+      opacity: 0;
+      transform: translateY(30px);
     }
+    
+    /* Staggered animation delays */
+    .icon-btn:nth-child(1) { animation-delay: 0.1s; }
+    .icon-btn:nth-child(2) { animation-delay: 0.2s; }
+    .icon-btn:nth-child(3) { animation-delay: 0.3s; }
+    .icon-btn:nth-child(4) { animation-delay: 0.4s; }
+    .icon-btn:nth-child(5) { animation-delay: 0.5s; }
+    .icon-btn:nth-child(7) { animation-delay: 0.6s; } /* Manager button */
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Ripple effect */
+    .icon-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(66,165,245,0.4), rgba(38,198,218,0.2));
+      transform: translate(-50%, -50%);
+      transition: width 0.6s var(--ease), height 0.6s var(--ease);
+      z-index: 0;
+    }
+    
+    .icon-btn.ripple::before {
+      width: 120px;
+      height: 120px;
+    }
+    
     .icon-btn:hover{
-      transform:translateY(-6px) scale(1.04);
+      transform:translateY(-8px) scale(1.08) rotateY(5deg);
       color:white;
-      box-shadow:0 10px 30px rgba(66,165,245,0.06), 0 2px 0 rgba(255,255,255,0.02) inset;
+      box-shadow:0 15px 40px rgba(66,165,245,0.15), 
+                 0 5px 15px rgba(38,198,218,0.1),
+                 0 0 30px rgba(66,165,245,0.08);
+      background: linear-gradient(135deg,rgba(66,165,245,0.1),rgba(38,198,218,0.05));
+      border-color: rgba(66,165,245,0.3);
+    }
+    
+    .icon-btn.active {
       background: linear-gradient(135deg,var(--accent),var(--accent-2));
       color:#041018;
-      box-shadow:0 12px 40px rgba(66,165,245,0.12), 0 0 60px rgba(38,198,218,0.08);
+      box-shadow:0 12px 40px rgba(66,165,245,0.25), 
+                 0 0 60px rgba(38,198,218,0.15),
+                 0 0 100px rgba(66,165,245,0.1);
+      transform: translateY(-4px) scale(1.05);
+      border-color: rgba(255,255,255,0.2);
     }
+    
+    .icon-btn.active::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 14px;
+      background: linear-gradient(45deg, var(--accent), var(--accent-2), var(--accent));
+      background-size: 200% 200%;
+      animation: borderGlow 3s ease-in-out infinite;
+      z-index: -1;
+      opacity: 0.6;
+    }
+    
+    @keyframes borderGlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
     .icon-btn img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 12px;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s var(--ease);
     }
+    
+    .icon-btn:hover img {
+      transform: scale(1.1);
+      filter: brightness(1.1) contrast(1.05);
+    }
+    
     .center{
       padding:10px 8px;
       display:flex;
@@ -200,7 +281,7 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: var(--card-gap);
       margin-top:24px;
-      margin-bottom: 24px; /* Added bottom margin to ensure spacing */
+      margin-bottom: 24px;
     }
     @media (max-width:1180px){ .cards-row{grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))} }
     @media (max-width:640px){ .cards-row{grid-template-columns: 1fr} }
@@ -275,8 +356,175 @@
       z-index:1;
       pointer-events:none;
     }
-    .page {display: none;}
+    
+    /* Page animations */
+    .page {
+      display: none;
+      animation: pageSlideIn 0.6s var(--ease) forwards;
+    }
+    
+    .page.active {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+    }
+    
+    @keyframes pageSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
     #news-page {display: flex; flex-direction: column; gap: var(--gap);}
+    
+    /* Enhanced Modal Animations */
+    #player-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      place-items: center;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: all 0.4s var(--ease);
+    }
+    
+    #player-modal.show {
+      display: grid;
+      opacity: 1;
+      animation: modalFadeIn 0.4s var(--ease) forwards;
+    }
+    
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .modal-content {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 32px;
+      width: 420px;
+      max-width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 100px rgba(66,165,245,0.1);
+      backdrop-filter: blur(16px);
+      transform: scale(0.8) translateY(50px);
+      transition: all 0.5s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    #player-modal.show .modal-content {
+      transform: scale(1) translateY(0);
+      animation: modalSlideIn 0.5s var(--ease) forwards;
+    }
+    
+    @keyframes modalSlideIn {
+      from {
+        transform: scale(0.8) translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+    
+    .modal-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 20px 20px 0 0;
+    }
+    
+    #close-modal {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 24px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s var(--ease);
+    }
+    
+    #close-modal:hover {
+      color: white;
+      background: rgba(255,255,255,0.05);
+      transform: scale(1.1);
+    }
+    
+    .player-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 30px rgba(66,165,245,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .player-photo::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, var(--accent), var(--accent-2), var(--accent));
+      background-size: 200% 200%;
+      animation: borderGlow 3s ease-in-out infinite;
+      z-index: -1;
+    }
+    
+    #player-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      transition: all 0.3s var(--ease);
+    }
+    
+    #player-name {
+      text-align: center;
+      margin: 0 0 16px;
+      font-size: 24px;
+      font-weight: 600;
+      background: linear-gradient(135deg, white, var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    #player-info {
+      text-align: center;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -309,7 +557,7 @@
           <a href="#" data-page="about">О НАС</a>
         </nav>
       </header>
-      <div id="news-page" class="page">
+      <div id="news-page" class="page active">
         <div class="hero" role="region" aria-label="Афиша">
           <div class="left-hero">
             <span class="kicker">Ближайший матч</span>
@@ -362,7 +610,7 @@
           </article>
         </div>
       </div>
-      <div id="matches-page" class="page" style="display:none;">
+      <div id="matches-page" class="page">
         <div class="hero" role="region" aria-label="Матчи">
           <div class="left-hero">
             <span class="kicker">Предстоящие матчи</span>
@@ -389,7 +637,7 @@
           </article>
         </div>
       </div>
-      <div id="tournaments-page" class="page" style="display:none;">
+      <div id="tournaments-page" class="page">
         <div class="hero" role="region" aria-label="Турниры">
           <div class="left-hero">
             <span class="kicker">Текущий турнир</span>
@@ -412,7 +660,7 @@
           </article>
         </div>
       </div>
-      <div id="media-page" class="page" style="display:none;">
+      <div id="media-page" class="page">
         <div class="hero" role="region" aria-label="Медиа">
           <div class="left-hero">
             <span class="kicker">Последнее видео</span>
@@ -439,11 +687,11 @@
           </article>
         </div>
       </div>
-      <div id="about-page" class="page" style="display:none;">
+      <div id="about-page" class="page">
         <div class="hero" role="region" aria-label="О нас">
           <div class="left-hero">
             <h2>Runa Team: От стартапа к топ-команде CIS</h2>
-            <p>Основана в начале 2025 года, подписана Stray228 в июне. Фокус на Dota 2, с сильным составом и недавними топ-перформансами в главных турнирах.  </p>
+            <p>Основана в начале 2025 года, подписана Stray228 в июне. Фокус на Dota 2, с сильным составом и недавними топ-перформансами в главных турнирах.</p>
           </div>
         </div>
         <div class="cards-row">
@@ -464,7 +712,7 @@
       </div>
       <div class="video-card" role="button" tabindex="0" onclick="window.open('https://youtu.be/JTob50may_o?si=DlnURAd2v8x7hDZJ', '_blank')">
         <div class="thumb"><img src="https://i.ytimg.com/vi/JTob50may_o/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAXiaLdrebkOoHgFXq58BBzWQg4rQ" alt="RUNA TEAM ИГРАЮТ В АССОЦИАЦИИ" style="width: 100%; height: 100%; object-fit: contain;"></div>
-        <div class="vmeta"><h4>RUNA TEAM ИГРАЮТ В АССОЦИАЦИИ</h4><p>10:50 · 230 views</p></div>
+        <div class="vmeta"><h4>RUNA TEAM ИГРАЮТ В АССОЦИАЦИИ</h4><p>10: · 230 views</p></div>
       </div>
       <div class="video-card" role="button" tabindex="0" onclick="window.open('https://youtu.be/CaTAIDk-B8E?si=sDQ5UMugtUt-Mfio', '_blank')">
         <div class="thumb"><img src="https://i.ytimg.com/vi/CaTAIDk-B8E/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDYEe7TQw2-tFDwfejlwzEfySlgaw" alt="RUNA TEAM ОТВЕТИЛИ НА ШКОЛЬНЫЕ ВОПРОСЫ!" style="width: 100%; height: 100%; object-fit: contain;"></div>
@@ -477,14 +725,14 @@
     </aside>
   </div>
   <div class="footer-text">© Runa Team Последнее обновление: 06.09.2025</div>
-  <div id="player-modal" style="display:none; position:fixed; inset:0; z-index:10; display:grid; place-items:center; background:rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
-    <div class="modal-content" style="background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.04); border-radius:16px; padding:24px; width:400px; max-width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.8); backdrop-filter: blur(8px);">
-      <button id="close-modal" style="float:right; background:none; border:none; color:white; cursor:pointer; font-size:20px;">×</button>
-      <div class="player-photo" style="width:150px; height:150px; border-radius:50%; margin:0 auto 16px; display:grid; place-items:center; box-shadow:0 6px 20px rgba(66,165,245,0.12);">
-        <img id="player-image" src="" alt="Фото игрока" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+  <div id="player-modal">
+    <div class="modal-content">
+      <button id="close-modal">×</button>
+      <div class="player-photo">
+        <img id="player-image" src="" alt="Фото игрока">
       </div>
-      <h2 id="player-name" style="text-align:center; margin:0 0 12px;"></h2>
-      <p id="player-info" style="text-align:center; color:var(--muted);"></p>
+      <h2 id="player-name"></h2>
+      <p id="player-info"></p>
     </div>
   </div>
   <script>
@@ -560,19 +808,41 @@
       }
       requestAnimationFrame(step);
     })();
+    
     (function(){
+      // Tab navigation functionality
       const navLinks = document.querySelectorAll('nav.top a');
+      const pages = document.querySelectorAll('.page');
+      
       navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
+          
+          // Remove active class from all nav links and pages
           navLinks.forEach(l => l.classList.remove('active'));
+          pages.forEach(p => {
+            p.classList.remove('active');
+            p.style.display = 'none';
+          });
+          
+          // Add active class to clicked link
           link.classList.add('active');
+          
+          // Show corresponding page with animation
           const pageId = link.dataset.page + '-page';
-          document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-          document.querySelector('#' + pageId).style.display = 'flex';
+          const targetPage = document.querySelector('#' + pageId);
+          if (targetPage) {
+            targetPage.style.display = 'flex';
+            setTimeout(() => {
+              targetPage.classList.add('active');
+            }, 10);
+          }
         });
       });
+      
+      // Player button functionality with enhanced animations
       const playerButtons = document.querySelectorAll('.left .icon-btn[data-player]');
+      const modal = document.getElementById('player-modal');
       const players = [
         {name: 'nesfeer', info: 'Magomed Kurbanov, 24, Carry.', image: '7.png'},
         {name: 'Nicky\'Cool', info: 'Nikita Ostakhov, 23, Midlane.', image: 'https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png'},
@@ -581,29 +851,67 @@
         {name: 'Till The End', info: 'Ilya Deriglazov, 25, Hard support.', image: 'https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png'},
         {name: 'stray228', info: 'Oleg Bocharov, 28, Manager и главный инвестор.', image: '6.png'},
       ];
+      
       playerButtons.forEach(btn => {
         btn.addEventListener('click', () => {
+          // Add ripple effect
+          btn.classList.add('ripple');
+          setTimeout(() => btn.classList.remove('ripple'), 600);
+          
+          // Update active state
           playerButtons.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
+          
+          // Get player data and show modal
           const index = parseInt(btn.dataset.player);
           const player = players[index];
+          
           document.getElementById('player-name').textContent = player.name;
           document.getElementById('player-info').textContent = player.info;
           document.getElementById('player-image').src = player.image;
-          document.getElementById('player-modal').style.display = 'grid';
+          
+          // Show modal with animation
+          modal.classList.add('show');
         });
       });
+      
+      // Close modal functionality
       document.getElementById('close-modal').addEventListener('click', () => {
-        document.getElementById('player-modal').style.display = 'none';
-        document.getElementById('player-image').src = '';
+        modal.classList.remove('show');
+        setTimeout(() => {
+          document.getElementById('player-image').src = '';
+        }, 400);
       });
+      
+      // Close modal when clicking outside
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('show');
+          setTimeout(() => {
+            document.getElementById('player-image').src = '';
+          }, 400);
+        }
+      });
+      
+      // Video card interactions
       document.querySelectorAll('.video-card').forEach(card=>{
-        card.addEventListener('keydown', (e)=>{if(e.key === 'Enter' || e.key === ' ') {card.click();e.preventDefault();}});
-        card.addEventListener('click', ()=>{card.animate([{transform:'scale(1)'},{transform:'scale(0.98)'},{transform:'scale(1)'}], {duration:220, easing:'ease-out'});});
+        card.addEventListener('keydown', (e)=>{
+          if(e.key === 'Enter' || e.key === ' ') {
+            card.click();
+            e.preventDefault();
+          }
+        });
+        card.addEventListener('click', ()=>{
+          card.animate([
+            {transform:'scale(1)'}, 
+            {transform:'scale(0.98)'}, 
+            {transform:'scale(1)'}
+          ], {
+            duration:220, 
+            easing:'ease-out'
+          });
+        });
       });
-      // Ensure modal is hidden on load
-      document.getElementById('player-modal').style.display = 'none';
-      document.getElementById('player-image').src = '';
     })();
   </script>
 </body>
