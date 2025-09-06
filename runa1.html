@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Runa — Prototype</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1: #06060a;
+      --bg-2: #0f1020;
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.03);
+      --accent: #42a5f5;
+      --accent-2: #26c6da;
+      --muted: #9aa3b2;
+      --card-radius: 14px;
+      --gap: 24px;
+      --card-gap: 24px;
+      --ease: cubic-bezier(.16,.84,.24,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      color: #e9f2ff;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(38,198,218,0.08), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(66,165,245,0.06), transparent),
+                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      overflow: hidden;
+      position: relative;
+    }
+    #bg-canvas{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      opacity:0.9;
+    }
+    .app{
+      position:relative;
+      z-index:2;
+      display:grid;
+      grid-template-columns: 84px 1fr 320px;
+      gap:var(--gap);
+      height:100vh;
+      padding:24px;
+      align-items:start;
+      transition:all .4s var(--ease);
+    }
+    @media (max-width:980px){
+      .app{grid-template-columns: 1fr; grid-auto-rows: min-content auto; padding:16px}
+      .right{order:3}
+      .left{order:2}
+      header{order:1;margin-bottom:10px}
+    }
+    header{
+      grid-column: 1 / -1;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      justify-content:space-between;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:12px;
+      padding:12px 16px;
+      backdrop-filter: blur(8px) saturate(120%);
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 24px rgba(5,7,20,0.6);
+    }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .logo{
+      width:48px;height:48px;border-radius:10px;
+      display:grid;place-items:center;
+      font-weight:700;color:#041018;font-family:"Orbitron",sans-serif;
+    }
+    .brand h1{font-size:16px;letter-spacing:0.6px;margin:0;font-weight:600}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    nav.top{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    nav.top a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      padding:8px 12px;
+      border-radius:10px;
+      transition: all .25s var(--ease);
+      position:relative;
+      font-size:13px;
+    }
+    nav.top a:hover{
+      color: white;
+      transform:translateY(-3px);
+      text-shadow: 0 4px 20px rgba(66,165,245,0.08);
+    }
+    nav.top a.active::after{
+      content:"";
+      position:absolute;left:12px;right:12px;bottom:8px;height:3px;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      border-radius:3px;
+      box-shadow:0 6px 20px rgba(66,165,245,0.12);
+    }
+    .left{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--card-radius);
+      padding:18px;
+      height:calc(100vh - 48px - 48px);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      align-items:center;
+      justify-content:flex-start;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+      position:sticky; top:24px;
+    }
+    .icon-btn{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;
+      transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+      color:var(--muted);
+      font-weight:700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn:hover{
+      transform:translateY(-6px) scale(1.04);
+      color:white;
+      box-shadow:0 10px 30px rgba(66,165,245,0.06), 0 2px 0 rgba(255,255,255,0.02) inset;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#041018;
+      box-shadow:0 12px 40px rgba(66,165,245,0.12), 0 0 60px rgba(38,198,218,0.08);
+    }
+    .icon-btn img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .center{
+      padding:10px 8px;
+      display:flex;
+      gap:var(--gap);
+      flex-direction:column;
+      height:calc(100vh - 48px - 48px);
+      overflow:auto;
+    }
+    .hero{
+      border-radius:18px;
+      padding:22px;
+      display:flex;
+      gap:22px;
+      align-items:center;
+      justify-content:space-between;
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 30px rgba(4,6,20,0.6);
+      backdrop-filter: blur(6px);
+      min-height:180px;
+      margin-bottom:20px;
+    }
+    .hero .left-hero{max-width:62%}
+    .kicker{display:inline-block;padding:6px 10px;border-radius:999px;background: linear-gradient(90deg, rgba(38,198,218,0.06), rgba(66,165,245,0.06));color:var(--muted);font-weight:600;font-size:12px}
+    .hero h2{font-size:22px;margin:12px 0 8px;letter-spacing:-0.4px}
+    .hero p{color:var(--muted);margin:0 0 12px;font-size:14px}
+    .cta{display:flex;gap:12px}
+    .btn-cta{
+      padding:10px 14px;border-radius:12px;border:none;font-weight:700;cursor:pointer;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#041018;
+      box-shadow:0 10px 40px rgba(66,165,245,0.12);
+      transition:transform .22s var(--ease);
+    }
+    .btn-cta.secondary{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+    .btn-cta:hover{transform:translateY(-4px)}
+    .hero .hero-art{
+      width:260px;height:140px;border-radius:12px;flex-shrink:0;
+      background: linear-gradient(120deg, rgba(38,198,218,0.08), rgba(66,165,245,0.08));
+      border:1px solid rgba(255,255,255,0.03);
+      display:grid;place-items:center;font-weight:700;color:var(--muted);
+      box-shadow:0 14px 50px rgba(0,0,0,0.6);
+    }
+    .cards-row{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--card-gap);
+      margin-top:24px;
+      margin-bottom: 24px; /* Added bottom margin to ensure spacing */
+    }
+    @media (max-width:1180px){ .cards-row{grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))} }
+    @media (max-width:640px){ .cards-row{grid-template-columns: 1fr} }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.03);
+      transition: transform .28s var(--ease), box-shadow .28s var(--ease);
+      backdrop-filter: blur(6px);
+    }
+    .card:hover{ transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+    .card h3{margin:0 0 8px;font-size:15px}
+    .card p{margin:0;color:var(--muted);font-size:13px}
+    .roster-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .roster-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .roster-item img.player-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .roster-item img.flag {
+      width: 20px;
+      height: 15px;
+    }
+    .right{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      height:calc(100vh - 48px - 48px);
+      overflow:auto;
+      border-radius:var(--card-radius);
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      backdrop-filter: blur(6px);
+      position:sticky; top:24px;
+    }
+    .video-card{
+      display:flex;gap:12px;align-items:center;padding:10px;border-radius:12px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+      transition: transform .2s var(--ease);
+      cursor:pointer;
+    }
+    .video-card:hover{ transform:translateY(-6px); box-shadow: 0 14px 30px rgba(0,0,0,0.5); }
+    .thumb{width:94px;height:60px;border-radius:8px; display:grid;place-items:center;}
+    .thumb img {width: 100%; height: 100%; object-fit: cover; border-radius: 8px;}
+    .vmeta h4{margin:0;font-size:14px}
+    .vmeta p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+    .footer-text{
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      z-index: 10;
+    }
+    .neon-orb{
+      position: absolute;
+      width:420px;height:420px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(38,198,218,0.12), transparent 30%),
+                  radial-gradient(circle at 70% 70%, rgba(66,165,245,0.08), transparent 30%);
+      filter: blur(60px);
+      transform: translate3d(-60px,-40px,0);
+      z-index:1;
+      pointer-events:none;
+    }
+    .page {display: none;}
+    #news-page {display: flex; flex-direction: column; gap: var(--gap);}
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+  <div class="neon-orb" style="top:72px;right:60px;"></div>
+  <div class="app" role="main" aria-label="Главный интерфейс">
+    <aside class="left" aria-label="Навигация">
+      <button class="icon-btn active" title="nesfeer - Carry" data-player="0"><img src="1.png" alt="nesfeer" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Nicky'Cool - Midlane" data-player="1"><img src="2.png" alt="Nicky'Cool" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="alberkaaa - Offlane" data-player="2"><img src="3.png" alt="alberkaaa" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Quezy - Soft support" data-player="3"><img src="4.png" alt="Quezy" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Till The End - Hard support" data-player="4"><img src="5.png" alt="Till The End" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <div style="flex:1"></div>
+      <button class="icon-btn" title="stray228 - Manager" data-player="5"><img src="6.png" alt="stray228" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+    </aside>
+    <section class="center" aria-label="Контент">
+      <header>
+        <div class="brand">
+          <div class="logo"><img src="https://images.cybersport.ru/images/details-logo/plain/1a/1aca7aee-a95b-4347-826a-4b7c09ba1238.png" alt="Runa Team Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;"></div>
+          <div>
+            <h1>Runa Team</h1>
+            <p>Киберспортивная команда</p>
+          </div>
+        </div>
+        <nav class="top" aria-label="Меню">
+          <a class="active" href="#" data-page="news">НОВОСТИ</a>
+          <a href="#" data-page="matches">МАТЧИ</a>
+          <a href="#" data-page="tournaments">ТУРНИРЫ</a>
+          <a href="#" data-page="media">МЕДИА</a>
+          <a href="#" data-page="about">О НАС</a>
+        </nav>
+      </header>
+      <div id="news-page" class="page">
+        <div class="hero" role="region" aria-label="Афиша">
+          <div class="left-hero">
+            <span class="kicker">Ближайший матч</span>
+            <h2>Runa vs Phoenix — Финал кубка</h2>
+            <p>Начало: 10 сентября · 20:00 UTC+3. Смотри трансляцию на нашем канале.</p>
+            <div class="cta">
+              <button class="btn-cta">Смотреть</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">POSTER</div>
+        </div>
+        <div class="cards-row" aria-label="Короткие карточки">
+          <article class="card">
+            <h3>Последние новости</h3>
+            <p>Runa Team была подписана Stray228 в июне 2025 года. Команда показала сильную игру на Riyadh Masters 2025, достигнув топ-8. Недавний состав стабилен без изменений с июля. Ближайший ESL One Asia в декабре 2025.</p>
+          </article>
+          <article class="card">
+            <h3>Состав</h3>
+            <div class="roster-list">
+              <div class="roster-item">
+                <img class="player-photo" src="7.png" alt="nesfeer">
+                <img class="flag" src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russia">
+                <span>Magomed Kurbanov (nesfeer) - Carry</span>
+              </div>
+              <div class="roster-item">
+                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png" alt="Nicky'Cool">
+                <img class="flag" src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Flag_of_Kazakhstan.svg" alt="Kazakhstan">
+                <span>Nikita Ostakhov (Nicky'Cool) - Midlane</span>
+              </div>
+              <div class="roster-item">
+                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/9d/9d0890f8-699b-44dc-936b-0cfd61a9c5b2.png" alt="alberkaaa">
+                <img class="flag" src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russia">
+                <span>Albert Chernoivanov (alberkaaa) - Offlane</span>
+              </div>
+              <div class="roster-item">
+                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/6d/6d995d02-de06-43b8-89d2-ec27c8570614.png" alt="Quezy">
+                <img class="flag" src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russia">
+                <span>Aleksandr Lipin (Quezy) - Soft support</span>
+              </div>
+              <div class="roster-item">
+                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png" alt="Till The End">
+                <img class="flag" src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" alt="Ukraine">
+                <span>Ilya Deriglazov (Till The End) - Hard support</span>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Стримы</h3>
+            <p>Расписание стримов на этой неделе: практики, фан-ивенты, Q&A с командой.</p>
+          </article>
+        </div>
+      </div>
+      <div id="matches-page" class="page" style="display:none;">
+        <div class="hero" role="region" aria-label="Матчи">
+          <div class="left-hero">
+            <span class="kicker">Предстоящие матчи</span>
+            <h2>Runa vs Eagles — Групповой этап ESL One Asia</h2>
+            <p>Начало: 15 сентября · 18:00 UTC+3. Не пропусти!</p>
+            <div class="cta">
+              <button class="btn-cta">Смотреть</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">MATCH POSTER</div>
+        </div>
+        <div class="cards-row">
+          <article class="card">
+            <h3>Прошлый матч</h3>
+            <p>Runa vs Virtus.pro: Поражение 1-2 в Riyadh Masters 2025, 4 августа 2025. Лучшие моменты: nesfeer 15 kills on Carry.</p>
+          </article>
+          <article class="card">
+            <h3>Следующий матч</h3>
+            <p>Vs Natus Vincere: Анализ соперника - ожидается напряженный бо3 в ESL One Asia qualifier, 10 сентября 2025.</p>
+          </article>
+          <article class="card">
+            <h3>Расписание</h3>
+            <p>Полный календарь: ESL One Asia qualifier (Sept 10-15), BetBoom Dacha (Oct 1-10), The International 2025 qualifiers (Nov).</p>
+          </article>
+        </div>
+      </div>
+      <div id="tournaments-page" class="page" style="display:none;">
+        <div class="hero" role="region" aria-label="Турниры">
+          <div class="left-hero">
+            <span class="kicker">Текущий турнир</span>
+            <h2>Riyadh Masters 2025</h2>
+            <p>Runa Team reached top 8, prize $500,000. Next: ESL One Asia.</p>
+            <div class="cta">
+              <button class="btn-cta">Подробнее</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">TOURNAMENT LOGO</div>
+        </div>
+        <div class="cards-row">
+          <article class="card">
+            <h3>Прошлые турниры</h3>
+            <p>Победа в Regional League 2024, 3rd in BetBoom Dacha 2025.</p>
+          </article>
+          <article class="card">
+            <h3>Рейтинг</h3>
+            <p>Команда на 12 месте в мире по HLTV Dota ranking September 2025.</p>
+          </article>
+        </div>
+      </div>
+      <div id="media-page" class="page" style="display:none;">
+        <div class="hero" role="region" aria-label="Медиа">
+          <div class="left-hero">
+            <span class="kicker">Последнее видео</span>
+            <h2>RUNA TEAM ИГРАЮТ В АССОЦИАЦИИ</h2>
+            <p>Смотри лучшие моменты.</p>
+            <div class="cta">
+              <button class="btn-cta" onclick="window.open('https://youtu.be/JTob50may_o?si=DlnURAd2v8x7hDZJ', '_blank')">Смотреть</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true"><img src="https://i.ytimg.com/vi/JTob50may_o/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAXiaLdrebkOoHgFXq58BBzWQg4rQ" alt="Video Thumbnail" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;"></div>
+        </div>
+        <div class="cards-row">
+          <article class="card">
+            <h3>Фото</h3>
+            <p>Галерея с Riyadh Masters 2025: team photos, action shots.</p>
+          </article>
+          <article class="card">
+            <h3>Видео</h3>
+            <p>Архив стримов: highlights from ESL One qualifiers.</p>
+          </article>
+          <article class="card">
+            <h3>Подкасты</h3>
+            <p>Интервью с Stray228 on team creation, August 2025.</p>
+          </article>
+        </div>
+      </div>
+      <div id="about-page" class="page" style="display:none;">
+        <div class="hero" role="region" aria-label="О нас">
+          <div class="left-hero">
+            <h2>Runa Team: От стартапа к топ-команде CIS</h2>
+            <p>Основана в начале 2025 года, подписана Stray228 в июне. Фокус на Dota 2, с сильным составом и недавними топ-перформансами в главных турнирах.  </p>
+          </div>
+        </div>
+        <div class="cards-row">
+          <article class="card">
+            <h3>Достижения</h3>
+            <p>Top 8 Riyadh Masters 2025, 3rd BetBoom Dacha, 1st Regional League 2024.</p>
+          </article>
+          <article class="card">
+            <h3>Спонсоры</h3>
+            <p>Stray228 as main investor, partnerships with cybersport.ru, Liquipedia sponsors.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <aside class="right" aria-label="Видео и медиа">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <h3 style="margin:0">Свежие видео</h3>
+      </div>
+      <div class="video-card" role="button" tabindex="0" onclick="window.open('https://youtu.be/JTob50may_o?si=DlnURAd2v8x7hDZJ', '_blank')">
+        <div class="thumb"><img src="https://i.ytimg.com/vi/JTob50may_o/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLAXiaLdrebkOoHgFXq58BBzWQg4rQ" alt="RUNA TEAM ИГРАЮТ В АССОЦИАЦИИ" style="width: 100%; height: 100%; object-fit: contain;"></div>
+        <div class="vmeta"><h4>RUNA TEAM ИГРАЮТ В АССОЦИАЦИИ</h4><p>10:50 · 230 views</p></div>
+      </div>
+      <div class="video-card" role="button" tabindex="0" onclick="window.open('https://youtu.be/CaTAIDk-B8E?si=sDQ5UMugtUt-Mfio', '_blank')">
+        <div class="thumb"><img src="https://i.ytimg.com/vi/CaTAIDk-B8E/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDYEe7TQw2-tFDwfejlwzEfySlgaw" alt="RUNA TEAM ОТВЕТИЛИ НА ШКОЛЬНЫЕ ВОПРОСЫ!" style="width: 100%; height: 100%; object-fit: contain;"></div>
+        <div class="vmeta"><h4>RUNA TEAM ОТВЕТИЛИ НА ШКОЛЬНЫЕ ВОПРОСЫ!</h4><p>8:40 · 489 views</p></div>
+      </div>
+      <div class="video-card" role="button" tabindex="0" onclick="window.open('https://youtu.be/gfTja7RF9Kw?si=MQTBsbtCl7HAGU4H', '_blank')">
+        <div class="thumb"><img src="https://i.ytimg.com/vi/gfTja7RF9Kw/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCTCPVLyeo_cJtJMikZg2EQztJ-fg" alt="Как STRAY228 Создал RUNA TEAM? Dota 2 Состав — Первое Знакомство" style="width: 100%; height: 100%; object-fit: contain;"></div>
+        <div class="vmeta"><h4>Как STRAY228 Создал RUNA TEAM? Dota 2 Состав — Первое Знакомство</h4><p>12:40 · 1.2k views</p></div>
+      </div>
+    </aside>
+  </div>
+  <div class="footer-text">© Runa Team Последнее обновление: 06.09.2025</div>
+  <div id="player-modal" style="display:none; position:fixed; inset:0; z-index:10; display:grid; place-items:center; background:rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+    <div class="modal-content" style="background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.04); border-radius:16px; padding:24px; width:400px; max-width:90%; box-shadow:0 10px 40px rgba(0,0,0,0.8); backdrop-filter: blur(8px);">
+      <button id="close-modal" style="float:right; background:none; border:none; color:white; cursor:pointer; font-size:20px;">×</button>
+      <div class="player-photo" style="width:150px; height:150px; border-radius:50%; margin:0 auto 16px; display:grid; place-items:center; box-shadow:0 6px 20px rgba(66,165,245,0.12);">
+        <img id="player-image" src="" alt="Фото игрока" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+      </div>
+      <h2 id="player-name" style="text-align:center; margin:0 0 12px;"></h2>
+      <p id="player-info" style="text-align:center; color:var(--muted);"></p>
+    </div>
+  </div>
+  <script>
+    (function(){
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      let w=canvas.width = innerWidth;
+      let h=canvas.height = innerHeight;
+      const DPR = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = innerWidth * DPR;
+      canvas.height = innerHeight * DPR;
+      canvas.style.width = innerWidth + 'px';
+      canvas.style.height = innerHeight + 'px';
+      ctx.scale(DPR, DPR);
+      const COUNT = Math.max(24, Math.floor((innerWidth+innerHeight)/60));
+      const pts = [];
+      const colors = ['rgba(66,165,245,0.9)', 'rgba(38,198,218,0.9)'];
+      for(let i=0;i<COUNT;i++){
+        pts.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          vx: (Math.random()-0.5) * 0.45,
+          vy: (Math.random()-0.5) * 0.45,
+          r: 1.0 + Math.random()*2.2,
+          c: colors[i%2],
+        });
+      }
+      function resize(){
+        w = canvas.width = innerWidth * DPR;
+        h = canvas.height = innerHeight * DPR;
+        canvas.style.width = innerWidth + 'px';
+        canvas.style.height = innerHeight + 'px';
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.scale(DPR, DPR);
+      }
+      addEventListener('resize', () => {resize();});
+      function dist(a,b){
+        const dx=a.x-b.x, dy=a.y-b.y;
+        return Math.sqrt(dx*dx+dy*dy);
+      }
+      function step(){
+        ctx.clearRect(0,0,innerWidth,innerHeight);
+        for(let i=0;i<pts.length;i++){
+          for(let j=i+1;j<pts.length;j++){
+            const d = dist(pts[i], pts[j]);
+            if(d < 160){
+              const opa = 0.18 * (1 - d / 160);
+              ctx.beginPath();
+              ctx.moveTo(pts[i].x, pts[i].y);
+              ctx.lineTo(pts[j].x, pts[j].y);
+              ctx.strokeStyle = 'rgba(120,200,255,' + (opa*0.5).toFixed(3) + ')';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+        for(const p of pts){
+          p.x += p.vx * (1 + Math.sin(Date.now()/4000)*0.2);
+          p.y += p.vy * (1 + Math.cos(Date.now()/4500)*0.2);
+          if(p.x < -20) p.x = innerWidth + 20;
+          if(p.x > innerWidth + 20) p.x = -20;
+          if(p.y < -20) p.y = innerHeight + 20;
+          if(p.y > innerHeight + 20) p.y = -20;
+          ctx.beginPath();
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
+          g.addColorStop(0, p.c.replace('0.9', '0.45'));
+          g.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.fillStyle = g;
+          ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2);
+          ctx.fill();
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    })();
+    (function(){
+      const navLinks = document.querySelectorAll('nav.top a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          const pageId = link.dataset.page + '-page';
+          document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+          document.querySelector('#' + pageId).style.display = 'flex';
+        });
+      });
+      const playerButtons = document.querySelectorAll('.left .icon-btn[data-player]');
+      const players = [
+        {name: 'nesfeer', info: 'Magomed Kurbanov, 24, Carry.', image: '7.png'},
+        {name: 'Nicky\'Cool', info: 'Nikita Ostakhov, 23, Midlane.', image: 'https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png'},
+        {name: 'alberkaaa', info: 'Albert Chernoivanov, 21, Offlane.', image: 'https://images.cybersport.ru/images/details-photo/plain/9d/9d0890f8-699b-44dc-936b-0cfd61a9c5b2.png'},
+        {name: 'Quezy', info: 'Aleksandr Lipin, 22, Soft support.', image: 'https://images.cybersport.ru/images/details-photo/plain/6d/6d995d02-de06-43b8-89d2-ec27c8570614.png'},
+        {name: 'Till The End', info: 'Ilya Deriglazov, 25, Hard support.', image: 'https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png'},
+        {name: 'stray228', info: 'Oleg Bocharov, 28, Manager и главный инвестор.', image: '6.png'},
+      ];
+      playerButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          playerButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const index = parseInt(btn.dataset.player);
+          const player = players[index];
+          document.getElementById('player-name').textContent = player.name;
+          document.getElementById('player-info').textContent = player.info;
+          document.getElementById('player-image').src = player.image;
+          document.getElementById('player-modal').style.display = 'grid';
+        });
+      });
+      document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('player-modal').style.display = 'none';
+        document.getElementById('player-image').src = '';
+      });
+      document.querySelectorAll('.video-card').forEach(card=>{
+        card.addEventListener('keydown', (e)=>{if(e.key === 'Enter' || e.key === ' ') {card.click();e.preventDefault();}});
+        card.addEventListener('click', ()=>{card.animate([{transform:'scale(1)'},{transform:'scale(0.98)'},{transform:'scale(1)'}], {duration:220, easing:'ease-out'});});
+      });
+      // Ensure modal is hidden on load
+      document.getElementById('player-modal').style.display = 'none';
+      document.getElementById('player-image').src = '';
+    })();
+  </script>
+</body>
+</html>
