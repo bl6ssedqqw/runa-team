@@ -1,10 +1,5 @@
-window.addEventListener('resize', () => {
-  if (window.innerWidth <= 640) {
-    document.body.style.overflow = 'auto';
-  } else {
-    document.body.style.overflow = 'hidden';
-  }
-});
-if (window.innerWidth <= 640) {
-  document.body.style.overflow = 'auto';
+function updateScroll() {
+  document.body.style.overflow = window.innerWidth <= 640 ? 'auto' : 'hidden';
 }
+window.addEventListener('resize', updateScroll);
+updateScroll();
