@@ -476,6 +476,7 @@
       border-radius: 50%;
       flex-shrink: 0;
       vertical-align: middle;
+      margin-top: 0;
     }
     .roster-item img.flag {
       width: 24px;
@@ -491,6 +492,19 @@
       text-overflow: ellipsis;
       line-height: 40px;
       vertical-align: middle;
+      margin-top: 0;
+    }
+    @media (min-width: 641px) {
+      .roster-item {
+        align-items: center;
+      }
+      .roster-item img.player-photo {
+        margin-top: 0;
+      }
+      .roster-item span {
+        line-height: 40px;
+        margin-top: 0;
+      }
     }
     .right{
       padding:18px;
@@ -750,11 +764,11 @@
   <div class="neon-orb" style="top:72px;right:60px;"></div>
   <div class="app" role="main" aria-label="Главный интерфейс">
     <aside class="left" aria-label="Навигация">
-      <button class="icon-btn active" title="nesfeer - Carry" data-player="0"><img src="1.png" alt="nesfeer" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="Nicky'Cool - Midlane" data-player="1"><img src="https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png" alt="Nicky'Cool" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="alberkaaa - Offlane" data-player="2"><img src="https://images.cybersport.ru/images/details-photo/plain/9d/9d0890f8-699b-44dc-936b-0cfd61a9c5b2.png" alt="alberkaaa" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="Quezy - Soft support" data-player="3"><img src="https://images.cybersport.ru/images/details-photo/plain/6d/6d995d02-de06-43b8-89d2-ec27c8570614.png" alt="Quezy" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
-      <button class="icon-btn" title="Till The End - Hard support" data-player="4"><img src="https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png" alt="Till The End" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn active" title="nesfeer - Carry" data-player="0"><img src="11.png" alt="nesfeer" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Nicky'Cool - Midlane" data-player="1"><img src="22.png" alt="Nicky'Cool" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="alberkaaa - Offlane" data-player="2"><img src="33.png" alt="alberkaaa" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Quezy - Soft support" data-player="3"><img src="44.png" alt="Quezy" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
+      <button class="icon-btn" title="Till The End - Hard support" data-player="4"><img src="55.png" alt="Till The End" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
       <div style="flex:1"></div>
       <button class="icon-btn" title="stray228 - Manager" data-player="5"><img src="6.png" alt="stray228" style="width:100%; height:100%; object-fit:cover; border-radius:12px;"></button>
     </aside>
@@ -801,22 +815,22 @@
                 <span>Magomed Kurbanov (nesfeer) - Carry</span>
               </div>
               <div class="roster-item">
-                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png" alt="Nicky'Cool">
+                <img class="player-photo" src="2.png" alt="Nicky'Cool">
                 <img class="flag" src="https://upload.wikimedia.org/wikipedia/commons/d/d3/Flag_of_Kazakhstan.svg" alt="Kazakhstan">
                 <span>Nikita Ostakhov (Nicky'Cool) - Midlane</span>
               </div>
               <div class="roster-item">
-                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/9d/9d0890f8-699b-44dc-936b-0cfd61a9c5b2.png" alt="alberkaaa">
+                <img class="player-photo" src="3.png" alt="alberkaaa">
                 <img class="flag" src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russia">
                 <span>Albert Chernoivanov (alberkaaa) - Offlane</span>
               </div>
               <div class="roster-item">
-                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/6d/6d995d02-de06-43b8-89d2-ec27c8570614.png" alt="Quezy">
+                <img class="player-photo" src="4.png" alt="Quezy">
                 <img class="flag" src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russia">
                 <span>Aleksandr Lipin (Quezy) - Soft support</span>
               </div>
               <div class="roster-item">
-                <img class="player-photo" src="https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png" alt="Till The End">
+                <img class="player-photo" src="5.png" alt="Till The End">
                 <img class="flag" src="https://upload.wikimedia.org/wikipedia/commons/4/49/Flag_of_Ukraine.svg" alt="Ukraine">
                 <span>Ilya Deriglazov (Till The End) - Hard support</span>
               </div>
@@ -1064,10 +1078,10 @@
       const playerImage = document.getElementById('player-image');
       const players = [
         {name: 'nesfeer', info: 'Magomed Kurbanov, 24, Carry.', image: '7.png'},
-        {name: 'Nicky\'Cool', info: 'Nikita Ostakhov, 23, Midlane.', image: 'https://images.cybersport.ru/images/details-photo/plain/5a/5afbf0e2-768a-453e-934a-7b640b3134c5.png'},
-        {name: 'alberkaaa', info: 'Albert Chernoivanov, 21, Offlane.', image: 'https://images.cybersport.ru/images/details-photo/plain/9d/9d0890f8-699b-44dc-936b-0cfd61a9c5b2.png'},
-        {name: 'Quezy', info: 'Aleksandr Lipin, 22, Soft support.', image: 'https://images.cybersport.ru/images/details-photo/plain/6d/6d995d02-de06-43b8-89d2-ec27c8570614.png'},
-        {name: 'Till The End', info: 'Ilya Deriglazov, 25, Hard support.', image: 'https://images.cybersport.ru/images/details-photo/plain/1d/1dff2967-7088-48c9-9543-fd412bcbede5.png'},
+        {name: 'Nicky\'Cool', info: 'Nikita Ostakhov, 23, Midlane.', image: '2.png'},
+        {name: 'alberkaaa', info: 'Albert Chernoivanov, 21, Offlane.', image: '3.png'},
+        {name: 'Quezy', info: 'Aleksandr Lipin, 22, Soft support.', image: '4.png'},
+        {name: 'Till The End', info: 'Ilya Deriglazov, 25, Hard support.', image: '5.png'},
         {name: 'stray228', info: 'Oleg Bocharov, 28, Manager и главный инвестор.', image: '6.png'},
       ];
       playerButtons.forEach(btn => {
