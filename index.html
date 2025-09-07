@@ -158,13 +158,13 @@
         max-height: none !important;
         overflow: visible !important;
       }
-      .card.roster-card {
+      .card.roster-card, .card.tournament-card {
         height: auto !important;
         min-height: unset !important;
         max-height: none !important;
         overflow-y: visible !important;
       }
-      .roster-list {
+      .roster-list, .tournament-list {
         height: auto !important;
         min-height: unset !important;
         max-height: none !important;
@@ -173,16 +173,16 @@
         flex-direction: column;
         gap: 10px;
       }
-      .roster-item{
+      .roster-item, .tournament-item{
         padding:8px;
         gap:12px;
         align-items: center;
       }
-      .roster-item img.player-photo{
-        width:40px;
-        height:40px;
-        object-fit: cover;
-        border-radius: 50%;
+      .roster-item img.player-photo, .tournament-icon{
+        width:60px;
+        height:34px;
+        object-fit: contain;
+        border-radius: 4px;
         vertical-align: middle;
         margin: 0;
       }
@@ -191,7 +191,7 @@
         height:16px;
         vertical-align: middle;
       }
-      .roster-item span{
+      .roster-item span, .tournament-item span{
         font-size:14px;
         line-height:40px;
         vertical-align: middle;
@@ -200,6 +200,15 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      .tier {
+        font-weight: bold;
+        color: var(--accent);
+        min-width: 50px;
+        font-size:14px;
+        line-height:40px;
+        vertical-align: middle;
+        margin: 0;
       }
       .right{
         padding:12px;
@@ -458,14 +467,14 @@
     .card:hover{ transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
     .card h3{margin:0 0 6px;font-size:14px}
     .card p{margin:0;color:var(--muted);font-size:12px}
-    .roster-list {
+    .roster-list, .tournament-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
       height: auto;
       overflow-y: visible;
     }
-    .roster-item {
+    .roster-item, .tournament-item {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -475,17 +484,17 @@
       background: rgba(255,255,255,0.02);
       transition: transform .2s var(--ease);
     }
-    .roster-item:hover {
+    .roster-item:hover, .tournament-item:hover {
       transform: translateY(-4px);
       background: rgba(255,255,255,0.04);
     }
-    .roster-item img.player-photo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+    .roster-item img.player-photo, .tournament-icon {
+      width: 60px;
+      height: 34px;
+      border-radius: 4px;
       flex-shrink: 0;
       vertical-align: middle;
-      object-fit: cover;
+      object-fit: contain;
       margin: 0;
     }
     .roster-item img.flag {
@@ -494,7 +503,7 @@
       flex-shrink: 0;
       vertical-align: middle;
     }
-    .roster-item span {
+    .roster-item span, .tournament-item span {
       flex: 1;
       font-size: 14px;
       white-space: nowrap;
@@ -503,6 +512,11 @@
       line-height: 40px;
       vertical-align: middle;
       margin: 0;
+    }
+    .tier {
+      font-weight: bold;
+      color: var(--accent);
+      min-width: 50px;
     }
     .right{
       padding:18px;
@@ -802,7 +816,7 @@
         <div class="cards-row" aria-label="Короткие карточки">
           <article class="card">
             <h3>Последние новости</h3>
-            <p>Runa Team была подписана Stray228 в июне 2025 года. Команда показала сильную игру на Riyadh Masters 2025, достигнув топ-8. Недавний состав стабилен без изменений с июля. Ближайший ESL One Asia в декабре 2025.</p>
+            <p>Runa Team завершила участие в CIS Battle 2, заняв 7-е место. 1 сентября 2025 года к команде присоединился новый игрок Hduo (Ilya Deriglazov) на позицию 5. Команда имеет мировой рейтинг #28 с 58% винрейтом и общими призовыми $43,000. Недавние результаты включают 3-е место на Sber Tournament 2025 с призовыми $7,533.</p>
           </article>
           <article class="card roster-card">
             <h3>Состав</h3>
@@ -844,26 +858,26 @@
         <div class="hero" role="region" aria-label="Матчи">
           <div class="left-hero">
             <span class="kicker">Предстоящие матчи</span>
-            <h2>Runa vs Eagles — Групповой этап ESL One Asia</h2>
-            <p>Начало: 15 сентября · 18:00 UTC+3. Не пропусти!</p>
+            <h2>Нет предстоящих матчей</h2>
+            <p>На данный момент нет запланированных матчей. Следите за обновлениями.</p>
             <div class="cta">
-              <button class="btn-cta">Смотреть</button>
+              <button class="btn-cta">Подписаться</button>
             </div>
           </div>
-          <div class="hero-art" aria-hidden="true">MATCH POSTER</div>
+          <div class="hero-art" aria-hidden="true"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/ddfdc11b-3c83-48af-8230-804b5a7192cb-profile_banner-480.jpeg" alt="Match Poster" style="width:100%; height:100%; object-fit:cover; border-radius:10px;"></div>
         </div>
         <div class="cards-row">
           <article class="card">
             <h3>Прошлый матч</h3>
-            <p>Runa vs Virtus.pro: Поражение 1-2 в Riyadh Masters 2025, 4 августа 2025. Лучшие моменты: nesfeer 15 kills on Carry.</p>
+            <p>Runa vs 4Pirates: Поражение 0-2 в CIS Battle 2, 31 августа 2025. Лучшие моменты: сильная игра в групповом этапе, но вылет в плей-офф.</p>
           </article>
           <article class="card">
             <h3>Следующий матч</h3>
-            <p>Vs Natus Vincere: Анализ соперника - ожидается напряженный бо3 в ESL One Asia qualifier, 10 сентября 2025.</p>
+            <p>Нет предстоящих матчей на сентябрь 2025. Ожидайте анонсов квалификаций или других турниров.</p>
           </article>
           <article class="card">
             <h3>Расписание</h3>
-            <p>Полный календарь: ESL One Asia qualifier (Sept 10-15), BetBoom Dacha (Oct 1-10), The International 2025 qualifiers (Nov).</p>
+            <p>Полный календарь: Завершен CIS Battle 2 (Aug 25-Sep 3). Нет текущих событий. Возможные будущие: ESL One Asia qualifier, BetBoom Dacha, The International qualifiers.</p>
           </article>
         </div>
       </div>
@@ -871,22 +885,43 @@
         <div class="hero" role="region" aria-label="Турниры">
           <div class="left-hero">
             <span class="kicker">Текущий турнир</span>
-            <h2>Riyadh Masters 2025</h2>
-            <p>Runa Team reached top 8, prize $500,000. Next: ESL One Asia.</p>
+            <h2>CIS Battle 2</h2>
+            <p>CIS Battle 2 - онлайн-турнир по Dota 2 в регионе CIS, организованный NarodCast. Проходил с 25 августа по 3 сентября 2025, призовой фонд $15,000. Runa Team заняла 7-е место с результатом 3/4 в групповом этапе.</p>
             <div class="cta">
               <button class="btn-cta">Подробнее</button>
             </div>
           </div>
-          <div class="hero-art" aria-hidden="true">TOURNAMENT LOGO</div>
+          <div class="hero-art" aria-hidden="true"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/ddfdc11b-3c83-48af-8230-804b5a7192cb-profile_banner-480.jpeg" alt="CIS Battle Logo" style="width:100%; height:100%; object-fit:cover; border-radius:10px;"></div>
         </div>
         <div class="cards-row">
-          <article class="card">
+          <article class="card tournament-card">
             <h3>Прошлые турниры</h3>
-            <p>Победа в Regional League 2024, 3rd in BetBoom Dacha 2025.</p>
+            <div class="tournament-list">
+              <div class="tournament-item">
+                <span class="tier">Tier 3</span>
+                <img src="https://liquipedia.net/commons/images/thumb/1/15/Sber_Tournament_2025_banner.jpg/600px-Sber_Tournament_2025_banner.jpg" alt="Sber Tournament 2025" class="tournament-icon">
+                <span>Sber Tournament 2025</span>
+              </div>
+              <div class="tournament-item">
+                <span class="tier">Tier 3</span>
+                <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/ddfdc11b-3c83-48af-8230-804b5a7192cb-profile_banner-480.jpeg" alt="CIS Battle" class="tournament-icon">
+                <span>CIS Battle</span>
+              </div>
+              <div class="tournament-item">
+                <span class="tier">Tier 3</span>
+                <img src="https://liquipedia.net/commons/images/thumb/0/0e/European_Pro_League_2023_darkmode.png/600px-European_Pro_League_2023_darkmode.png" alt="European Pro League Season 28" class="tournament-icon">
+                <span>European Pro League Season 28</span>
+              </div>
+              <div class="tournament-item">
+                <span class="tier">Tier 3</span>
+                <img src="https://liquipedia.net/commons/images/thumb/f/f0/CCT_Dota2_Season_2_Series_allmode.png/150px-CCT_Dota2_Season_2_Series_allmode.png" alt="CCT Season 2 Series 1" class="tournament-icon">
+                <span>CCT Season 2 Series 1</span>
+              </div>
+            </div>
           </article>
           <article class="card">
             <h3>Рейтинг</h3>
-            <p>Команда на 12 месте в мире по HLTV Dota ranking September 2025.</p>
+            <p>Команда занимает 28-е место в мировом рейтинге по Dota 2 на сентябрь 2025 с 58% винрейтом. Общие призовые: $43,000. Недавние выступления включают 7-е место в CIS Battle 2 и 3-е в Sber Tournament 2025.</p>
           </article>
         </div>
       </div>
@@ -936,7 +971,7 @@
         <div class="cards-row">
           <article class="card">
             <h3>Достижения</h3>
-            <p>Top 8 Riyadh Masters 2025, 3rd BetBoom Dacha, 1st Regional League 2024.</p>
+            <p>1-е место в CIS Battle ($7,000), 1-е место в CCT Season 2 Series 1 ($25,000), 3-е место в Sber Tournament 2025 ($7,533), 2-е место в European Pro League Season 26 ($3,000), 5-6-е место в European Pro League Season 28 ($500).</p>
           </article>
           <article class="card">
             <h3>Спонсоры</h3>
@@ -963,7 +998,7 @@
       </div>
     </aside>
   </div>
-  <div class="footer-text">© Runa Team Последнее обновление: 06.09.2025</div>
+  <div class="footer-text">© Runa Team Последнее обновление: 07.09.2025</div>
   <div id="player-modal">
     <div class="modal-content">
       <button id="close-modal">×</button>
